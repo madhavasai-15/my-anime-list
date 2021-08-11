@@ -1,0 +1,129 @@
+:root {
+    --common-color: rgb(40, 40, 40);
+    --second-color: rgb(178, 0, 255)
+}
+
+@font-face {
+    font-family: 'animeFont';
+    src: url('../anime-ace.regular.ttf');
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'animeFont';
+}
+
+body {
+    background-color: rgb(20, 20, 20);
+    overflow-x: hidden;
+}
+
+.header h2 {
+    color: var(--second-color);
+    padding-left: 2%;
+}
+
+.header button {
+    background-color: rgba(178, 0, 255, 0);
+    border: 3px solid rgba(178, 0, 255, 0);
+    color: var(--second-color);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    position: relative;
+    left: 45%;
+    bottom: 60px;
+    transition: all .3s linear;
+}
+
+.header button:hover {
+    border: 3px solid var(--second-color);   
+    cursor: pointer; 
+}
+
+#header-active {
+    background-color: rgba(178, 0, 255, 1);
+    color: white;
+}
+
+.profile-icon-dropdown {
+    position: relative;
+    left: 94%;
+    bottom: 110px;
+}
+
+#profile-icon {
+    width: 48px;
+    height: 48px;
+    transition: all 1s linear;
+}
+
+#profile-icon:hover {
+    cursor: pointer;
+}
+
+.profile-icon-dropdown-content{
+    position: relative;
+    left: -110px;
+    display: none;
+    position: absolute;
+    background-color: rgba(60, 60, 60, 0.4);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.profile-icon-dropdown-content a {
+    color: var(--second-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.profile-icon-dropdown-content a:hover {
+    background-color: var(--second-color);
+    color: white;
+}
+
+.profile-icon-dropdown:hover .profile-icon-dropdown-content {
+    display: block;
+}
+
+#sign-in-button{
+    left: 60%;
+    background-color: var(--second-color);
+    color: white;
+    border-radius: 10px;
+    transition: all 1s linear;
+}
+
+#sign-in-button:hover {
+    cursor: pointer; 
+    transform: scale(1.1);
+}
+
+#home-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    padding: 8%;
+    color: var(--second-color);
+    transition: 2s;
+}
+
+#home-header h1 {
+    color: var(--second-color);
+    font-size: 70px;
+    letter-spacing: 7px;
+    cursor: pointer;
+    transition: 2s;
+    margin-bottom: 120px;
+    font-family: 'animeFont';
+}
+
+#home-header h1:hover {
+    letter-spacing: 15px;
+    transform: scale(1.5);
+}

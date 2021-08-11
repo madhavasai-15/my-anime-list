@@ -1,0 +1,108 @@
+:root {
+    --common-color: rgb(40, 40, 40);
+    --second-color: rgb(178, 0, 255);
+}
+
+@font-face {
+    font-family: 'animeFont';
+    src: url('../anime-ace.regular.ttf');
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'animeFont';
+}
+
+body {
+    background-color: rgb(20, 20, 20);
+    overflow-x: hidden;
+}
+
+h2 {
+    color: var(--second-color);
+    position: absolute;
+    left: 50%;
+    top: 100px;
+    transform: translateX(-50%);
+}
+
+.input {
+    font-family: inherit;
+    width: 25%;
+    border: 0;
+    border-bottom: 2px solid gray;
+    outline: 0;
+    font-size: 1.3rem;
+    color: white;
+    padding: 7px 0;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+  
+.input:focus {
+    padding-bottom: 6px;  
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, rgb(178, 0, 255), rgb(108, 0, 155));
+    border-image-slice: 1;
+}
+  
+.input:focus::placeholder {
+    color: transparent;
+}
+
+#email {
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translateX(-50%);
+}
+
+#password {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translateX(-50%);
+}
+
+#login-button {
+    background-color: var(--second-color);
+    width: 25%;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translateX(-50%);
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#login-button:hover {
+    cursor: pointer;
+    border: 3px solid rgb(178, 0, 255);
+    background-color: rgba(178, 0, 255, 0);
+    color: var(--second-color);
+}
+
+#error-message {
+    color: red;
+    position: absolute;
+    left: 50%;
+    top: 53%;
+    transform: translateX(-50%);
+}
+
+#having-account {
+    color: white;
+    position: absolute;
+    left: 50%;
+    top: 57%;
+    transform: translateX(-50%);
+}
+
+#having-account a {
+    color: var(--second-color);
+}

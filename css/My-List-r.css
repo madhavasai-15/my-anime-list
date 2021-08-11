@@ -1,0 +1,87 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+   
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .header h2 {
+        padding-left: 45%;
+    }
+
+    .header button {
+        bottom: 0px;
+        left: 0px;
+    }
+
+    #search-input {
+        bottom: 0px;
+        left: 0%;
+    }
+
+    #sign-in-button {
+        left: 85%;
+        top: 10px;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) { 
+    .header h2 {
+        padding-left: 45%;
+    }
+
+    .header button {
+        bottom: 0px;
+        left: 7%;
+    }
+
+    #search-input {
+        bottom: 0px;
+        left: 8%;
+    }
+
+    #sign-in-button {
+        left: 14%;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .header h2 {
+        padding-left: 2%;
+    }
+
+    .header button {
+        left: 33%;
+        bottom: 60px;
+    }
+
+    #search-input {
+        left: 33%;
+        bottom: 60px;
+    }
+
+    #sign-in-button {
+        left: 33%;
+        top: -55px;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1600px and up) */
+@media only screen and (min-width: 1600px) {
+    #sign-in-button {
+        left: 47%;
+        top: -55px;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1980px and up) */
+@media only screen and (min-width: 1980px) {
+    
+}

@@ -1,0 +1,19 @@
+:root {
+    --common-color: rgb(40, 40, 40);
+    --second-color: rgb(178, 0, 255)
+}
+
+@font-face {
+    font-family: 'animeFont';
+    src: url('anime-ace.regular.ttf');
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'animeFont';
+}
+
+body {
+    background-color: rgb(20, 20, 20);
+    overflow-x: hidden;
+}

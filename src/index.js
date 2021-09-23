@@ -1,27 +1,34 @@
-// Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyAGb1N4WGyUnJcJx1zxFP6YqPZ26MDHDys",
-    authDomain: "my-anime-list-7b070.firebaseapp.com",
-    projectId: "my-anime-list-7b070",
-    storageBucket: "my-anime-list-7b070.appspot.com",
-    messagingSenderId: "716138821740",
-    appId: "1:716138821740:web:5efe5207f18c7feba8c049"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+fetch('https://madhavasai-15.github.io/my/anime-list/0.json')
+.then(res => res.json())
+.then(firebaseConfig => {
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig['0']);
 
-firebase.auth().onAuthStateChanged(user => {
-    if(user){
-       console.log(user);
-       $('#profile-icon').css({ 'display': 'inline-block' });
-    }else {
-        $('#sign-in-button').html('Sign in');
-        $('#sign-in-button').css({ 'display': 'inline-block' });
+    // Rendering Component
+    class Web extends React.Component {
+        render(){
+            return (
+                <div>
+                    <header>
+                        <h2> My Anime List </h2>
+                        <ul className="topnav">
+                            <li className="active" onClick={() => window.location.href = 'index.html'}><a> Home </a></li>
+                            <li onClick={() => window.location.href = 'my-list.html'}><a> List </a></li>
+                        </ul>
+                    </header>
+                    <main>
+                    
+                    </main>
+                </div>
+            )
+        }
     }
-});
 
-$('#Sign-Out').click(function(){
-    firebase.auth().signOut().then(() => {
-        window.location.reload();
+    firebase.auth().onAuthStateChanged(user => {
+        if(user){
+            ReactDOM.render(<Web/>, document.getElementById('main'));
+        }else {
+            window.location.href = 'sign-in.html';
+        }
     });
 });

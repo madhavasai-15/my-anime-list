@@ -4,62 +4,27 @@
         <title> New Anime? </title>
         <link rel="icon" type="image/png" href="icon.png">
         <link rel="stylesheet" href="css/uploading-new-anime.css">
-        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://madhavasai-15.github.io/web-storage/cookies.js"></script>
-        
+
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
         <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-storage.js"></script>
 
-        <script defer src="src/uploading-new-anime.js"></script>
+        <script defer type="text/babel" src="src/uploading-new-anime.js"></script>
 
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <section>
-            <div class="header">
-                <h2> My Anime List </h2>
-                <button onclick="window.location.href = 'index.html'" id="header-active" > Home </button>
-                <button onclick="window.location.href = 'My-List.html'"> List </button>
-                <button onclick="window.location.href = 'Favourites.html'"> Favourites </button>
-                <button onclick="window.location.href = 'About-us.html'"> About us </button>
-                <button id="login-in-button" style="display: none;"> </button>
-                <div class="profile-icon-dropdown">
-                    <img id="profile-icon" style="display: none;" onclick="window.location.href = 'porfile.html';" src="avator_default.png">
-                    <div class="profile-icon-dropdown-content">
-                        <a href="#"> My List </a>
-                        <a href="#"> My Favourites </a>
-                        <a href="#"> Sign out </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="upload-new-anime">
-            <h2 id="message" ></h2>
-
-            <figure>
-                <div class="card">
-                    <div class="iconimg"> <a> <img id="image" /> </a> </div>
-                </div>
-                <figcaption>
-                    <p id="image-name">  </p>
-                </figcaption>
-            </figure>
-
-            <div class="input-group">
-                <input type="input" class="input" id='name' placeholder="Anime Name" name="name" required />
-                <input type="input" class="input" id='total' placeholder="Total Episodes" name="total" required />
-            </div>
-
-            <button id="select"> Select Image </button>
-            <button id="upload"> Upload Anime </button>
-
-            <section class="search-result"></section>
-        </section>
+       <div id="main"></div>
     </body>
 </html>

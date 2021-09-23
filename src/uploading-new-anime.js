@@ -1,161 +1,159 @@
-var firebaseConfig = {
-    apiKey: "AIzaSyAGb1N4WGyUnJcJx1zxFP6YqPZ26MDHDys",
-    authDomain: "my-anime-list-7b070.firebaseapp.com",
-    projectId: "my-anime-list-7b070",
-    storageBucket: "my-anime-list-7b070.appspot.com",
-    messagingSenderId: "716138821740",
-    appId: "1:716138821740:web:5efe5207f18c7feba8c049"
-};
+fetch('https://madhavasai-15.github.io/my/anime-list/0.json')
+.then(res => res.json())
+.then(firebaseConfig => {
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig['0']);
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+    // Update firestore settings
+    firebase.firestore().settings({ timestampInSnapshots: true });
 
-//update firestore settings
-firebase.firestore().settings({ timestampInSnapshots: true });
+    // Checking localstorage for changes everyday
+    var getDate = window.localStorage.getItem('MAL_D');
+    var date = new Date().getDate();
 
-var selected_anime;
-var LSanime = JSON.parse(window.localStorage.getItem('AA'));
-var fakeLSAnime = false;
+    // Getting Animes from localStorage
+    var Animes = JSON.parse(window.localStorage.getItem('MAL'));
 
-var User;
-var docList = [];
-firebase.auth().onAuthStateChanged(user => {
-    if(user){
-        User = user;
-        firebase.firestore().collection('Users').doc(User.email).collection('List').get().then(snapshot => {
-            snapshot.docs.forEach(doc => {
-                docList.push(doc.data());
+    // Getting Anime Name from hash
+    var hashAnime = window.location.hash.slice(1).replace(/%20/g, " ");
+    var hashAnimeResults = [];
+
+    // Animes from List
+    var animes = [];
+
+    // ReactJS
+    class Result extends React.Component {
+        constructor(){
+            super();
+            this.status = 'Not Added';
+        }
+
+        componentDidMount(){
+            animes.map(anime => {
+                if(this.props.anime.title.toLowerCase().replace(/[^a-zA-Z]/g, '') === anime.data.AnimeName.toLowerCase().replace(/[^a-zA-Z]/g, '')){
+                    this.status = 'Added';
+                }
             })
-        }).then(() => {
-            $('#upload').css({ 'display': 'inline-block' });
-            $('#select').css({ 'display': 'inline-block' });
-            $('#name').css({ 'display': 'inline-block' });
-            $('#total').css({ 'display': 'inline-block' });
-            $('figure').css({ 'display': 'inline-block' });
-        })
-        
-    }
-});
+        }
 
-setTimeout(() => {
-    if (User) {
-        if (LSanime) {
-            if (window.location.hash !== `#uploading-?${LSanime.title}-anime`) {
-                window.localStorage.removeItem('AA');
-                window.location.reload();
-            }
-            document.getElementById('image').src = LSanime.image_url;
-            document.getElementById('name').value = LSanime.title;
-            document.getElementById('total').value = LSanime.episodes;
-
-            $('#upload').click(function () {
-                firebase.firestore().collection('Users').doc(User.email).collection('List').add({
-                    AnimeName: $('#name').val(),
-                    ImgUrl: LSanime.image_url,
-                    episodes: $('#total').val(),
-                    watching: '0',
-                    redirect: 'anime',
-                }).then(() => { $('#message').html(`You Have Uploaded The ${$('#name').val()} to Your List!`); })
-            });
-
-            $('#select').hide();
-        } else {
-            $('#select').click(function () {
-                var input = document.createElement('input');
-                input.type='file';
-                input.onchange = e => {
-                    files = e.target.files; reader = new FileReader(); reader.onload = function () {
-                        document.getElementById('image').src = reader.result
-                    };
-                    reader.readAsDataURL(files[0]);
-                }
-                input.click();
-            });
-            
-            $('#upload').click(function () {
-                if (!fakeLSAnime) {
-                    var upload = firebase.storage().ref(`Anime-Images/${$('#name').val()}.png`).put(files[0]);
-                    upload.on('state_changed', function (snapshot) {
-                        $('#message').html(`Uploading... in ${Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)}%`);
-                    },
-                        function (error) {
-                            alert(error);
-                        },
-                        function () {
-                            upload.snapshot.ref.getDownloadURL().then(function (url) {
-                                firebase.firestore().collection('Users').doc(User.email).collection('List').add({
-                                    AnimeName: $('#name').val(),
-                                    ImgUrl: url,
-                                    episodes: $('#total').val(),
+        addToList = () => {
+            if(this.status === 'Not Added'){
+                Swal.fire({
+                    imageUrl: this.props.anime.image_url,
+                    imageWidth: 190,
+                    imageHeight: 270,
+                    text: `Click "add" to add ${this.props.anime.title} to your list`,
+                    confirmButtonText: 'Add',
+                    showCancelButton: true,
+                }).then(result => {
+                    if(result.isConfirmed){
+                        firebase.auth().onAuthStateChanged(user => {
+                            if(user){
+                                firebase.firestore().collection('Users').doc(user.email).collection('List').add({
+                                    AnimeName: this.props.anime.title,
+                                    ImgUrl: this.props.anime.image_url,
+                                    episodes: this.props.anime.episodes,
                                     watching: '0',
-                                    redirect: 'anime',
-                                }).then(() => { $('#message').html(`You Have Uploaded The ${$('#name').val()} to Your List!`); })
-                            });
-                        });
-                }
-                
-                if (fakeLSAnime) {
-                    firebase.firestore().collection('Users').doc(User.email).collection('List').add({
-                        AnimeName: $('#name').val(),
-                        ImgUrl: document.getElementById('image').src,
-                        episodes: $('#total').val(),
-                        watching: '0',
-                        redirect: 'anime',
-                    }).then(() => { $('#message').html(`You Have Uploaded The ${$('#name').val()} to Your List!`); })
-                }
-            });
+                                })
+                                .then(() => {
+                                    Swal.fire(`${this.props.anime.title} is added to your list!`);
+                                    this.status = 'Added';
+                                });
+                            }
+                        })
+                    }
+                })
+            }else {
+                Swal.fire({
+                    text: `${this.props.anime.title} is already added to your list!`,
+                });
+            };
+        }
+
+        render(){
+            let episodes = (this.props.anime.type == 'TV') ? <button> Episodes: {this.props.anime.episodes} </button> : <button> {this.props.anime.type} </button>;
+
+            return (
+                <div className="result">
+                    <img className="image" src={this.props.anime.image_url} />
+                    <div>
+                        <h4 className="title" > <b> {this.props.anime.title} </b> </h4> 
+                        <p className="synopsis"> {this.props.anime.synopsis} </p> 
+                        <div className="details">
+                            {episodes}
+                            <button> Rated: {this.props.anime.rated} </button>
+                            <button onClick={this.addToList}> Add </button>
+                        </div>
+                    </div>
+                </div>
+            )
         }
     }
-}, 600);
 
-var ImgName, ImgUrl;
-var files = [];
-var reader;
+    // Rendering Component
+    class Web extends React.Component {
+        constructor(){
+            super();
+            this.results = [];
+        }
 
-var Timer;
+        search = () => {
+            if($('#search-input').val() !== ''){
+                window.location.hash = $('#search-input').val();
+                ReactDOM.render(<Web/>, document.getElementById('main'));
+            }
+        }
 
-$('#name').keyup(function () {
-    clearTimeout(Timer);
-    Timer = setTimeout(() => {
-        $('.search-result').empty();
-        fetch(`https://api.jikan.moe/v3/search/anime?q=${$("#name").val()}`)
-            .then(res => res.json())
-            .then(anime => {
-                for (var i = 0; i < 10; i++) {
-                    let add_text = 'Add';
-                    for (var j = 0; j < docList.length; j++) {                        
-                        if (anime.results[i].title.replace(/[^a-zA-Z]/g, '') == docList[j].AnimeName.replace(/[^a-zA-Z]/g, '')) {
-                            //console.log(anime.results[i].title.toLowerCase().replace(/[^a-zA-Z]/g, ''), docList[j].AnimeName.toLowerCase().replace(/[^a-zA-Z]/g, ''))
-                            add_text = 'Added';
-                        }
-                    }
-                    $(`
-                        <div class="search-result-item" id="result-${i}">
-                            <div class="container">
-                                <img class="image" src="${anime.results[i].image_url}">
-                                <h3 id="title"> ${anime.results[i].title} </h3>
-                                <p id="about"> ${anime.results[i].synopsis} </p>
-                                <button onclick="adding('${anime.results[i].title}', '${anime.results[i].image_url}', '${anime.results[i].episodes}')"> ${add_text} </button>
-                            </div>
+        render(){
+            hashAnimeResults.map(result => this.results.push(<Result anime={result} />));
+                
+            return (
+                <div>
+                    <header>
+                        <h2> My Anime List </h2>
+                        <ul className="topnav">
+                            <li onClick={() => window.location.href = 'index.html'}><a> Home </a></li>
+                            <li onClick={() => window.location.href = 'my-list.html'}><a> List </a></li>
+                        </ul>
+                    </header>
+                    <div>
+                        <input id="search-input" placeholder="Search Anime"/>
+                        <button className="search-button" onClick={this.search}> Search </button>
+                    </div>
+                    <main>
+                        <div className="results">
+                            {this.results}
                         </div>
-                    `).appendTo('.search-result');
-                }
-            })
-            .catch(err => {
-                console.warn(err);
-            });
-    }, 600);
+                    </main>
+                </div>
+            )
+        }
+    }
+
+    // User
+    firebase.auth().onAuthStateChanged(user => {
+        if(user){
+            if(getDate){
+                animes = Animes;
+            }else {
+                firebase.firestore().collection('Users').doc(user.email).collection('List').orderBy('AnimeName').get()
+                .then(snapshot => {
+                    snapshot.docs.forEach(doc => animes.push({ id: doc.id, data: doc.data() }));
+                })
+                .then(() => window.localStorage.setItem('MAL', JSON.stringify(animes)));
+
+                window.localStorage.setItem('MAL_D', new Date().getDate());
+            }
+
+            if(hashAnime){
+                fetch(`https://api.jikan.moe/v3/search/anime?q=${hashAnime}`)
+                .then(res => res.json())
+                .then(anime => hashAnimeResults = anime.results)
+                .then(() => ReactDOM.render(<Web/>, document.getElementById('main')))
+                .catch(err => console.log(err));
+            }
+        }
+    });
+
+    window.addEventListener("hashchange", () => window.location.reload()); 
 });
-
-function adding(title, image_url, episodes) {
-    fakeLSAnime = true;
-    document.getElementById('image').src = image_url;
-    document.getElementById('name').value = title;
-    document.getElementById('total').value = episodes;
-    $('.search-result').empty();
-}
-
-
-
-
-

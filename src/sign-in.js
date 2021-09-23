@@ -1,32 +1,44 @@
-// Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyAGb1N4WGyUnJcJx1zxFP6YqPZ26MDHDys",
-    authDomain: "my-anime-list-7b070.firebaseapp.com",
-    projectId: "my-anime-list-7b070",
-    storageBucket: "my-anime-list-7b070.appspot.com",
-    messagingSenderId: "716138821740",
-    appId: "1:716138821740:web:5efe5207f18c7feba8c049"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+fetch('https://madhavasai-15.github.io/my/anime-list/0.json')
+.then(res => res.json())
+.then(firebaseConfig => {
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig['0']);
 
-//update firestore settings
-firebase.firestore().settings({ timestampInSnapshots: true });
-
-firebase.auth().onAuthStateChanged(user => {
-    if(user){
-        window.location.href = 'index.html';
+    // ReactJS
+    class Web extends React.Component {
+        render(){
+            return (
+                <div>
+                    <header>
+                        <h2> My Anime List </h2>
+                    </header>
+                    <main>
+                        <input type="email" id="email" className="input" placeholder="Email" required />
+                        <input type="password" id="password" className="input" placeholder="Password" required />
+                        <button id="login-button" onClick={() => {
+                            firebase.auth().signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('password').value)
+                                .then(cred => {
+                                    $('#error-message').html('');
+                                })
+                                .catch(err => {
+                                    $('#error-message').html(err.message);
+                                });
+                        }}> Sign in </button>
+                        <p id="error-message"></p>
+                        <p id="having-account"> Don't have an account? <a href={'sign-up.html'}> Sign up </a> </p>
+                    </main>               
+                </div>
+            )
+        }
     }
-});
 
-$('#login-button').click(function () {
-    firebase.auth().signInWithEmailAndPassword($('#email').val(), $('#password').val())
-    .then(cred => {
-        console.log(cred);
-        $('#error-message').html('');
-    })
-    .catch(err => {
-        $('#error-message').html(err.message);
-        console.warn(err.message);
+
+
+    firebase.auth().onAuthStateChanged(user => {
+        if(user){
+            window.location.href = 'index.html';
+        }else {
+            ReactDOM.render(<Web/>, document.getElementById('main'));
+        }
     });
 });

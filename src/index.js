@@ -13,7 +13,7 @@ fetch('https://madhavasai-15.github.io/my/anime-list/0.json')
                         <h2> My Anime List </h2>
                         <ul className="topnav">
                             <li className="active" onClick={() => window.location.href = 'index.html'}><a> Home </a></li>
-                            <li onClick={() => window.location.href = 'my-list.html'}><a> List </a></li>
+                            <li onClick={() => window.location.href = 'My-List.html'}><a> List </a></li>
                         </ul>
                     </header>
                     <main>

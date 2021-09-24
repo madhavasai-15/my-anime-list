@@ -201,7 +201,7 @@
                         <h2> My Anime List </h2>
                         <ul className="topnav">
                             <li className="nav" onClick={() => window.location.href = 'index.html'}> Home </li>
-                            <li className="nav active" onClick={() => window.location.href = 'my-list.html'}>List </li>
+                            <li className="nav active" onClick={() => window.location.href = 'My-List.html'}>List </li>
                             <select className="select-type" id="type" onChange={() => {
                                 window.location.hash = document.getElementById('type').value; 
                                 window.location.reload();
